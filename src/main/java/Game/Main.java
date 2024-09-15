@@ -1,9 +1,7 @@
 package Game;
 
 import Engine.Engine;
-import Engine.Objects.Entity;
-import Engine.Objects.Model;
-import Engine.Objects.ModelLoader;
+import Engine.Objects.*;
 import Engine.Rendering.*;
 import Engine.Rendering.Lighting.*;
 import Engine.Rendering.Scene.Camera;
@@ -12,6 +10,9 @@ import Engine.Rendering.Scene.Window;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import Engine.IAppLogic;
+import Engine.TerrainGenerator;
+
+import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -42,14 +43,14 @@ public class Main implements IAppLogic {
 
     @Override
     public void init(Window window, Scene scene, Render render) {
-        String terrainModelId = "terrain";
-        Model terrainModel = ModelLoader.loadModel(terrainModelId, "resources/models/terrain/terrain.obj",
-                scene.getTextureCache(), scene.getMaterialCache(), false);
-        scene.addModel(terrainModel);
-        Entity terrainEntity = new Entity("terrainEntity", terrainModelId);
-        terrainEntity.setScale(100.0f);
-        terrainEntity.updateModelMatrix();
-        scene.addEntity(terrainEntity);
+//        String terrainModelId = "terrain";
+//        Model terrainModel = ModelLoader.loadModel(terrainModelId, "resources/models/terrain/terrain.obj",
+//                scene.getTextureCache(), scene.getMaterialCache(), false);
+//        scene.addModel(terrainModel);
+//        Entity terrainEntity = new Entity("terrainEntity", terrainModelId);
+//        terrainEntity.setScale(100.0f);
+//        terrainEntity.updateModelMatrix();
+//        scene.addEntity(terrainEntity);
 
         String treeModelId = "tree";
         Model treeModel = ModelLoader.loadModel(treeModelId, "resources/models/tree/Lowpoly_tree_sample.obj",
@@ -59,6 +60,16 @@ public class Main implements IAppLogic {
         treeEntity.setScale(0.5f);
         treeEntity.updateModelMatrix();
         scene.addEntity(treeEntity);
+
+        MeshData terrainMeshData = TerrainGenerator.generateTerrain();
+        Mesh terrainMesh = new Mesh(terrainMeshData);
+        Model terrainModel = new Model("terrain", List.of(terrainMeshData), List.of());
+        scene.addModel(terrainModel);
+        Entity terrainEntity = new Entity("terrainEntity", "terrain");
+        terrainEntity.setPosition(0, 0, 0);
+        terrainEntity.setScale(1.0f);
+        terrainEntity.updateModelMatrix();
+        scene.addEntity(terrainEntity);
 
         render.setupData(scene);
 

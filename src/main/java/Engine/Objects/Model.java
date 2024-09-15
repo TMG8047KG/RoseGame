@@ -34,7 +34,7 @@ public class Model {
     }
 
     public List<MeshData> getMeshDataList() {
-        return meshDataList;
+        return new ArrayList<>(meshDataList);
     }
 
     public List<RenderBuffers.MeshDrawData> getMeshDrawDataList() {

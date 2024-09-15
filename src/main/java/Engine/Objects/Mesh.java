@@ -1,6 +1,7 @@
 package Engine.Objects;
 
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL46;
 import org.lwjgl.system.MemoryStack;
 
@@ -31,7 +32,7 @@ public class Mesh {
             // Positions VBO
             int vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer positionsBuffer = stack.callocFloat(meshData.getPositions().length);
+            FloatBuffer positionsBuffer = BufferUtils.createFloatBuffer(meshData.getPositions().length);
             positionsBuffer.put(0, meshData.getPositions());
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);
@@ -41,7 +42,7 @@ public class Mesh {
             // Normals VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer normalsBuffer = stack.callocFloat(meshData.getNormals().length);
+            FloatBuffer normalsBuffer = BufferUtils.createFloatBuffer(meshData.getNormals().length);
             normalsBuffer.put(0, meshData.getNormals());
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, normalsBuffer, GL_STATIC_DRAW);
@@ -51,7 +52,7 @@ public class Mesh {
             // Tangents VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer tangentsBuffer = stack.callocFloat(meshData.getTangents().length);
+            FloatBuffer tangentsBuffer = BufferUtils.createFloatBuffer(meshData.getTangents().length);
             tangentsBuffer.put(0, meshData.getTangents());
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, tangentsBuffer, GL_STATIC_DRAW);
@@ -61,7 +62,7 @@ public class Mesh {
             // Bitangents VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer bitangentsBuffer = stack.callocFloat(meshData.getBitangents().length);
+            FloatBuffer bitangentsBuffer = BufferUtils.createFloatBuffer(meshData.getBitangents().length);
             bitangentsBuffer.put(0, meshData.getBitangents());
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, bitangentsBuffer, GL_STATIC_DRAW);
@@ -71,7 +72,7 @@ public class Mesh {
             // Texture coordinates VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer textCoordsBuffer = stack.callocFloat(meshData.getTextCoords().length);
+            FloatBuffer textCoordsBuffer = BufferUtils.createFloatBuffer(meshData.getTextCoords().length);
             textCoordsBuffer.put(0, meshData.getTextCoords());
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
@@ -81,7 +82,7 @@ public class Mesh {
             // Bone weights
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer weightsBuffer = stack.callocFloat(meshData.getWeights().length);
+            FloatBuffer weightsBuffer = BufferUtils.createFloatBuffer(meshData.getWeights().length);
             weightsBuffer.put(meshData.getWeights()).flip();
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, weightsBuffer, GL_STATIC_DRAW);
@@ -91,7 +92,7 @@ public class Mesh {
             // Bone indices
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            IntBuffer boneIndicesBuffer = stack.callocInt(meshData.getBoneIndices().length);
+            IntBuffer boneIndicesBuffer = BufferUtils.createIntBuffer(meshData.getBoneIndices().length);
             boneIndicesBuffer.put(meshData.getBoneIndices()).flip();
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, boneIndicesBuffer, GL_STATIC_DRAW);
@@ -101,7 +102,7 @@ public class Mesh {
             // Index VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            IntBuffer indicesBuffer = stack.callocInt(meshData.getIndices().length);
+            IntBuffer indicesBuffer = BufferUtils.createIntBuffer(meshData.getIndices().length);
             indicesBuffer.put(0, meshData.getIndices());
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboId);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
