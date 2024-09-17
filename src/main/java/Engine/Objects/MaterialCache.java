@@ -6,7 +6,7 @@ import java.util.List;
 public class MaterialCache {
     public static final int DEFAULT_MATERIAL_IDX = 0;
 
-    private List<Material> materialsList;
+    private static List<Material> materialsList;
 
     public MaterialCache() {
         materialsList = new ArrayList<>();
@@ -14,7 +14,7 @@ public class MaterialCache {
         materialsList.add(defaultMaterial);
     }
 
-    public void addMaterial(Material material) {
+    public static void addMaterial(Material material) {
         materialsList.add(material);
         material.setMaterialIdx(materialsList.size() - 1);
     }

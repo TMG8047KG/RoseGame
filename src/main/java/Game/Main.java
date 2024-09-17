@@ -11,6 +11,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import Engine.IAppLogic;
 import Engine.TerrainGenerator;
+import org.joml.Vector4f;
 
 import java.util.List;
 
@@ -61,12 +62,18 @@ public class Main implements IAppLogic {
         treeEntity.updateModelMatrix();
         scene.addEntity(treeEntity);
 
+
+        Material terrainMaterial = new Material();
+        terrainMaterial.setAmbientColor(new Vector4f(0.2f, 0.4f, 0.1f, 1.0f));
+        terrainMaterial.setDiffuseColor(new Vector4f(0.2f, 0.4f, 0.1f, 1.0f));
+        terrainMaterial.setSpecularColor(new Vector4f(0.2f, 0.4f, 0.1f, 1.0f));
+        MaterialCache.addMaterial(terrainMaterial);
         MeshData terrainMeshData = TerrainGenerator.generateTerrain();
-        Mesh terrainMesh = new Mesh(terrainMeshData);
+        terrainMeshData.setMaterialIdx(terrainMaterial.getMaterialIdx());
         Model terrainModel = new Model("terrain", List.of(terrainMeshData), List.of());
         scene.addModel(terrainModel);
         Entity terrainEntity = new Entity("terrainEntity", "terrain");
-        terrainEntity.setPosition(0, 0, 0);
+        terrainEntity.setPosition(-32, 0, -32);
         terrainEntity.setScale(1.0f);
         terrainEntity.updateModelMatrix();
         scene.addEntity(terrainEntity);
