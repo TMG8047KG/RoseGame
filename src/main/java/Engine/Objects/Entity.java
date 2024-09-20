@@ -1,20 +1,21 @@
 package Engine.Objects;
 
 import Engine.Rendering.AnimationData;
+import Engine.Objects.Model;
 import org.joml.*;
 
 public class Entity {
     private final String id;
-    private final String modelId;
+    private Model model; // Change from modelId to Model reference
     private AnimationData animationData;
     private Matrix4f modelMatrix;
     private Vector3f position;
     private Quaternionf rotation;
     private float scale;
 
-    public Entity(String id, String modelId) {
+    public Entity(String id, Model model) {
         this.id = id;
-        this.modelId = modelId;
+        this.model = model; // Store the Model object directly
         modelMatrix = new Matrix4f();
         position = new Vector3f();
         rotation = new Quaternionf();
@@ -29,8 +30,12 @@ public class Entity {
         return id;
     }
 
-    public String getModelId() {
-        return modelId;
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model; // Allow updating the Model
     }
 
     public Matrix4f getModelMatrix() {

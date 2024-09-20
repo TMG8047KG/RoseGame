@@ -1,16 +1,18 @@
 package Game;
 
 import Engine.Engine;
+import Engine.GUI.TerrainSettings;
 import Engine.Objects.*;
 import Engine.Rendering.*;
 import Engine.Rendering.Lighting.*;
 import Engine.Rendering.Scene.Camera;
 import Engine.Rendering.Scene.Scene;
 import Engine.Rendering.Scene.Window;
+import Engine.Terrain.TerrainGenerator;
+import Engine.Terrain.TerrainManager;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import Engine.IAppLogic;
-import Engine.TerrainGenerator;
 import org.joml.Vector4f;
 
 import java.util.List;
@@ -20,14 +22,12 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Main implements IAppLogic {
 
     private static final float MOUSE_SENSITIVITY = 0.1f;
-    private static final float MOVEMENT_SPEED = 0.005f;
+    private static float MOVEMENT_SPEED = 0.01f;
 
-    private AnimationData animationData1;
-    private AnimationData animationData2;
-    private Entity cubeEntity1;
-    private Entity cubeEntity2;
+    TerrainManager terrainManager = new TerrainManager();
+    Entity terrainEntity;
     private float lightAngle;
-    private float rotation;
+    private Vector2f lastCameraChunkPos = new Vector2f();
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -44,36 +44,29 @@ public class Main implements IAppLogic {
 
     @Override
     public void init(Window window, Scene scene, Render render) {
-//        String terrainModelId = "terrain";
-//        Model terrainModel = ModelLoader.loadModel(terrainModelId, "resources/models/terrain/terrain.obj",
-//                scene.getTextureCache(), scene.getMaterialCache(), false);
-//        scene.addModel(terrainModel);
-//        Entity terrainEntity = new Entity("terrainEntity", terrainModelId);
-//        terrainEntity.setScale(100.0f);
-//        terrainEntity.updateModelMatrix();
-//        scene.addEntity(terrainEntity);
+        Camera camera = scene.getCamera();
+        camera.setPosition(-1.5f, 3.0f, 4.5f);
+        camera.addRotation((float) Math.toRadians(15.0f), (float) Math.toRadians(390.f));
+
+        Material terrainMaterial = new Material();
+        terrainMaterial.setAmbientColor(new Vector4f(0.2f, 0.3f, 0.1f, 1.0f));
+        terrainMaterial.setDiffuseColor(new Vector4f(0.2f, 0.4f, 0.1f, 1.0f));
+        terrainMaterial.setSpecularColor(new Vector4f(0.3f, 0.6f, 0.2f, 1.0f));
+        terrainMaterial.setReflectance(0.01f);
+        MaterialCache.addMaterial(terrainMaterial);
 
         String treeModelId = "tree";
         Model treeModel = ModelLoader.loadModel(treeModelId, "resources/models/tree/Lowpoly_tree_sample.obj",
                 scene.getTextureCache(), scene.getMaterialCache(), false);
         scene.addModel(treeModel);
-        Entity treeEntity = new Entity("treeEntity", treeModelId);
+        Entity treeEntity = new Entity("treeEntity", treeModel);
         treeEntity.setScale(0.5f);
         treeEntity.updateModelMatrix();
         scene.addEntity(treeEntity);
 
-
-        Material terrainMaterial = new Material();
-        terrainMaterial.setAmbientColor(new Vector4f(0.2f, 0.4f, 0.1f, 1.0f));
-        terrainMaterial.setDiffuseColor(new Vector4f(0.2f, 0.4f, 0.1f, 1.0f));
-        terrainMaterial.setSpecularColor(new Vector4f(0.2f, 0.4f, 0.1f, 1.0f));
-        MaterialCache.addMaterial(terrainMaterial);
-        MeshData terrainMeshData = TerrainGenerator.generateTerrain();
-        terrainMeshData.setMaterialIdx(terrainMaterial.getMaterialIdx());
-        Model terrainModel = new Model("terrain", List.of(terrainMeshData), List.of());
+        Model terrainModel = new Model("terrain", terrainManager.getVisibleChunks(camera.getPosition()), List.of());
         scene.addModel(terrainModel);
-        Entity terrainEntity = new Entity("terrainEntity", "terrain");
-        terrainEntity.setPosition(-32, 0, -32);
+        terrainEntity = new Entity("terrainEntity", terrainModel);
         terrainEntity.setScale(1.0f);
         terrainEntity.updateModelMatrix();
         scene.addEntity(terrainEntity);
@@ -96,13 +89,10 @@ public class Main implements IAppLogic {
         skyBox.getSkyBoxEntity().updateModelMatrix();
         scene.setSkyBox(skyBox);
 
-        scene.setFog(new Fog(true, new Vector3f(0.5f, 0.5f, 0.5f), 0.005f));
-
-        Camera camera = scene.getCamera();
-        camera.setPosition(-1.5f, 3.0f, 4.5f);
-        camera.addRotation((float) Math.toRadians(15.0f), (float) Math.toRadians(390.f));
+//        scene.setFog(new Fog(true, new Vector3f(0.5f, 0.5f, 0.5f), 0.005f));
 
         lightAngle = 45.001f;
+        lastCameraChunkPos = getChunkPosition(camera.getPosition());
     }
 
     @Override
@@ -122,8 +112,11 @@ public class Main implements IAppLogic {
         } else if (window.isKeyPressed(GLFW_KEY_D)) {
             camera.moveRight(move);
         }
-        if(window.isKeyPressed(GLFW_KEY_LEFT_SHIFT)){
+        if(window.isKeyPressed(GLFW_KEY_LEFT_CONTROL)){
             camera.moveDown(move);
+        }
+        if(window.isKeyPressed(GLFW_KEY_LEFT_SHIFT)){
+            MOVEMENT_SPEED = 0.05f;
         }
         if(window.isKeyPressed(GLFW_KEY_SPACE)){
             camera.moveUp(move);
@@ -155,5 +148,34 @@ public class Main implements IAppLogic {
 
     @Override
     public void update(Window window, Scene scene, long diffTimeMillis) {
+        Camera camera = scene.getCamera();
+        Vector2f currentCameraChunkPos = getChunkPosition(camera.getPosition());
+
+        // Check if the camera moved to a new chunk
+        if (!currentCameraChunkPos.equals(lastCameraChunkPos)) {
+            // Update the terrain chunks
+            List<MeshData> visibleChunks = terrainManager.getVisibleChunks(camera.getPosition());
+            Model newTerrainModel = new Model("terrain", visibleChunks, List.of());
+            System.out.println("Number of visible chunks: " + visibleChunks.size());
+
+
+            // Update the entity's model with the new terrain model
+            terrainEntity.setModel(newTerrainModel);
+
+            // Update the entity's model matrix
+            terrainEntity.updateModelMatrix();
+
+            // Update the last known camera chunk position
+            lastCameraChunkPos.set(currentCameraChunkPos);
+            System.out.println("Camera position: " + camera.getPosition());
+            System.out.println("Current chunk position: " + currentCameraChunkPos);
+        }
+    }
+
+    // Helper method to get the chunk position based on camera position
+    private Vector2f getChunkPosition(Vector3f cameraPos) {
+        int chunkX = (int) Math.floor(cameraPos.x / TerrainGenerator.CHUNK_SIZE);
+        int chunkZ = (int) Math.floor(cameraPos.z / TerrainGenerator.CHUNK_SIZE);
+        return new Vector2f(chunkX, chunkZ);
     }
 }

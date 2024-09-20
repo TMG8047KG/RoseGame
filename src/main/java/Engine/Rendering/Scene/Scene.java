@@ -34,7 +34,7 @@ public class Scene {
     }
 
     public void addEntity(Entity entity) {
-        String modelId = entity.getModelId();
+        String modelId = entity.getModel().getId();
         Model model = modelMap.get(modelId);
         if (model == null) {
             throw new RuntimeException("Could not find model [" + modelId + "]");

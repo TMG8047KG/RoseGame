@@ -10,11 +10,11 @@ public class SkyBox {
 
     public SkyBox(String skyBoxModelPath, TextureCache textureCache, MaterialCache materialCache) {
         skyBoxModel = ModelLoader.loadModel("skybox-model", skyBoxModelPath, textureCache, materialCache, false);
-        MeshData meshData = skyBoxModel.getMeshDataList().get(0);
+        MeshData meshData = skyBoxModel.getMeshDataList().getFirst();
         material = materialCache.getMaterial(meshData.getMaterialIdx());
         mesh = new Mesh(meshData);
         skyBoxModel.getMeshDataList().clear();
-        skyBoxEntity = new Entity("skyBoxEntity-entity", skyBoxModel.getId());
+        skyBoxEntity = new Entity("skyBoxEntity-entity", skyBoxModel);
     }
 
     public void cleanuo() {
