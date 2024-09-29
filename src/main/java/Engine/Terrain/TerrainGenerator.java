@@ -6,12 +6,13 @@ import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class TerrainGenerator {
     public static final int CHUNK_SIZE = 64; // Size of each chunk
     private static final float SCALE = 500.0f;
-    private static final float MAX_HEIGHT = 1000.0f;
-    private static final int OCTAVES = 8; // For noise generation
+    private static final float MAX_HEIGHT = 300.0f;
+    private static final int OCTAVES = 6; // For noise generation
 
     // HashMap to store generated terrain chunks by their coordinates
     private Map<Vector2f, MeshData> chunkCache = new HashMap<>();
@@ -26,6 +27,7 @@ public class TerrainGenerator {
     }
 
     private MeshData generateChunk(Vector2f chunkPos) {
+        Random rnd = new Random(123);
         int vertexCount = CHUNK_SIZE * CHUNK_SIZE;
         float[] positions = new float[vertexCount * 3];
         float[] normals = new float[vertexCount * 3];
@@ -44,8 +46,9 @@ public class TerrainGenerator {
                 // Ensure worldX and worldZ are aligned at chunk borders
                 float worldX = (chunkPos.x * (CHUNK_SIZE - 1)) + x;
                 float worldZ = (chunkPos.y * (CHUNK_SIZE - 1)) + z;
+                float worldY = (CHUNK_SIZE - 1.2f);
 
-                float height = generateHeight(worldX, worldZ);
+                float height = generateHeight(worldX, worldY, worldZ, 8004);
                 positions[index] = worldX;
                 positions[index + 1] = height;
                 positions[index + 2] = worldZ;
@@ -69,16 +72,15 @@ public class TerrainGenerator {
     }
 
 
-    private float generateHeight(float x, float z) {
+    private float generateHeight(float x, float y, float z, long seed) {
         float height = 0.0f;
         float frequency = 1.0f;
-        float amplitude = 1.0f;
+        float amplitude = 1.2f;
         float persistence = 0.5f;
         float lacunarity = 2.0f;
-        long seed = 12345L;
 
         for (int i = 0; i < OCTAVES; i++) {
-            height += OpenSimplex2S.noise2(seed, x * frequency / SCALE, z * frequency / SCALE) * amplitude;
+            height += OpenSimplex2S.noise3_ImproveXZ(seed, x * frequency / SCALE, y, z * frequency / SCALE) * amplitude;
             amplitude *= persistence;
             frequency *= lacunarity;
         }

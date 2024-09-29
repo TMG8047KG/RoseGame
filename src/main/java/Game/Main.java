@@ -25,7 +25,9 @@ public class Main implements IAppLogic {
     private static float MOVEMENT_SPEED = 0.01f;
 
     TerrainManager terrainManager = new TerrainManager();
+    Model terrainModel;
     Entity terrainEntity;
+    Entity treeEntity;
     private float lightAngle;
     private Vector2f lastCameraChunkPos = new Vector2f();
 
@@ -55,21 +57,22 @@ public class Main implements IAppLogic {
         terrainMaterial.setReflectance(0.01f);
         MaterialCache.addMaterial(terrainMaterial);
 
-        String treeModelId = "tree";
-        Model treeModel = ModelLoader.loadModel(treeModelId, "resources/models/tree/Lowpoly_tree_sample.obj",
-                scene.getTextureCache(), scene.getMaterialCache(), false);
-        scene.addModel(treeModel);
-        Entity treeEntity = new Entity("treeEntity", treeModel);
-        treeEntity.setScale(0.5f);
-        treeEntity.updateModelMatrix();
-        scene.addEntity(treeEntity);
-
-        Model terrainModel = new Model("terrain", terrainManager.getVisibleChunks(camera.getPosition()), List.of());
+        terrainModel = new Model("terrain", terrainManager.getVisibleChunks(camera.getPosition()), List.of());
         scene.addModel(terrainModel);
         terrainEntity = new Entity("terrainEntity", terrainModel);
         terrainEntity.setScale(1.0f);
         terrainEntity.updateModelMatrix();
         scene.addEntity(terrainEntity);
+
+        String treeModelId = "tree";
+        Model treeModel = ModelLoader.loadModel(treeModelId, "resources/models/tree/Lowpoly_tree_sample.obj",
+                scene.getTextureCache(), scene.getMaterialCache(), false);
+        scene.addModel(treeModel);
+        treeEntity = new Entity("treeEntity", treeModel);
+        treeEntity.setPosition(2, 2,1);
+        treeEntity.setScale(0.5f);
+        treeEntity.updateModelMatrix();
+        scene.addEntity(treeEntity);
 
         render.setupData(scene);
 
@@ -89,7 +92,7 @@ public class Main implements IAppLogic {
         skyBox.getSkyBoxEntity().updateModelMatrix();
         scene.setSkyBox(skyBox);
 
-//        scene.setFog(new Fog(true, new Vector3f(0.5f, 0.5f, 0.5f), 0.005f));
+        scene.setFog(new Fog(true, new Vector3f(0.5f, 0.5f, 0.5f), 0.005f));
 
         lightAngle = 45.001f;
         lastCameraChunkPos = getChunkPosition(camera.getPosition());
@@ -120,6 +123,10 @@ public class Main implements IAppLogic {
         }
         if(window.isKeyPressed(GLFW_KEY_SPACE)){
             camera.moveUp(move);
+        }
+        if(window.isKeyPressed(GLFW_KEY_H)){
+            scene.removeModel(treeEntity.getModel());
+
         }
         if (window.isKeyPressed(GLFW_KEY_COMMA)) {
             lightAngle -= 2.5f;
@@ -154,17 +161,20 @@ public class Main implements IAppLogic {
         // Check if the camera moved to a new chunk
         if (!currentCameraChunkPos.equals(lastCameraChunkPos)) {
             // Update the terrain chunks
-            List<MeshData> visibleChunks = terrainManager.getVisibleChunks(camera.getPosition());
-            Model newTerrainModel = new Model("terrain", visibleChunks, List.of());
-            System.out.println("Number of visible chunks: " + visibleChunks.size());
+            scene.removeModel(terrainEntity.getModel());
+            scene.removeEntity(terrainEntity);
 
+            List<MeshData> visibleChunks = terrainManager.getVisibleChunks(camera.getPosition());
+            terrainModel = new Model("terrain", visibleChunks, List.of());
+            System.out.println("Number of visible chunks: " + visibleChunks.size());
+            scene.addModel(terrainModel);
 
             // Update the entity's model with the new terrain model
-            terrainEntity.setModel(newTerrainModel);
+            terrainEntity.setModel(terrainModel);
 
             // Update the entity's model matrix
             terrainEntity.updateModelMatrix();
-
+            scene.addEntity(terrainEntity);
             // Update the last known camera chunk position
             lastCameraChunkPos.set(currentCameraChunkPos);
             System.out.println("Camera position: " + camera.getPosition());
