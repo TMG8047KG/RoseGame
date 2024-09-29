@@ -85,6 +85,21 @@ public class RenderBuffers {
 
     public void loadAnimatedModels(Scene scene) {
         List<Model> modelList = scene.getModelMap().values().stream().filter(Model::isAnimated).toList();
+
+        // Exit early if there are no animated models
+        if (modelList.isEmpty()) {
+            animVaoId = glGenVertexArrays(); // Create VAO even if it's not used
+            glBindVertexArray(animVaoId);
+            // Create empty buffers
+            destAnimationBuffer = glGenBuffers();
+            vboIdList.add(destAnimationBuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, destAnimationBuffer);
+            glBufferData(GL_ARRAY_BUFFER, 0, GL_STATIC_DRAW);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            return;
+        }
+
         loadBindingPoses(modelList);
         loadBonesMatricesBuffer(modelList);
         loadBonesIndicesWeights(modelList);
@@ -100,6 +115,7 @@ public class RenderBuffers {
         int bindingPoseOffset = 0;
         int chunkWeightsOffset = 0;
         int weightsOffset = 0;
+
         for (Model model : modelList) {
             List<Entity> entities = model.getEntitiesList();
             for (Entity entity : entities) {
@@ -161,6 +177,7 @@ public class RenderBuffers {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
+
 
     private void loadBindingPoses(List<Model> modelList) {
         int meshSize = 0;
@@ -264,7 +281,30 @@ public class RenderBuffers {
     }
 
     public void loadStaticModels(Scene scene) {
+
         List<Model> modelList = scene.getModelMap().values().stream().filter(m -> !m.isAnimated()).toList();
+
+        // Exit early if there are no static models
+        if (modelList.isEmpty()) {
+            staticVaoId = glGenVertexArrays(); // Create VAO even if it's not used
+            glBindVertexArray(staticVaoId);
+            // Create empty buffers
+            int vboId = glGenBuffers();
+            vboIdList.add(vboId);
+            glBindBuffer(GL_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ARRAY_BUFFER, 0, GL_STATIC_DRAW);
+
+            // Create empty index buffer
+            vboId = glGenBuffers();
+            vboIdList.add(vboId);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, GL_STATIC_DRAW);
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindVertexArray(0);
+            return;
+        }
+
         staticVaoId = glGenVertexArrays();
         glBindVertexArray(staticVaoId);
         int positionsSize = 0;
@@ -272,6 +312,7 @@ public class RenderBuffers {
         int textureCoordsSize = 0;
         int indicesSize = 0;
         int offset = 0;
+
         for (Model model : modelList) {
             List<MeshDrawData> meshDrawDataList = model.getMeshDrawDataList();
             for (MeshData meshData : model.getMeshDataList()) {
@@ -280,13 +321,14 @@ public class RenderBuffers {
                 textureCoordsSize += meshData.getTextCoords().length;
                 indicesSize += meshData.getIndices().length;
 
-                int meshSizeInBytes = meshData.getPositions().length * 14 * 4;
+                int meshSizeInBytes = meshData.getPositions().length * 14 * 4; // Adjust this based on your layout
                 meshDrawDataList.add(new MeshDrawData(meshSizeInBytes, meshData.getMaterialIdx(), offset,
                         meshData.getIndices().length));
                 offset = positionsSize / 3;
             }
         }
 
+        // Vertex Buffer Object for static models
         int vboId = glGenBuffers();
         vboIdList.add(vboId);
         FloatBuffer meshesBuffer = MemoryUtil.memAllocFloat(positionsSize + normalsSize * 3 + textureCoordsSize);
@@ -302,7 +344,7 @@ public class RenderBuffers {
 
         defineVertexAttribs();
 
-        // Index VBO
+        // Index Buffer Object
         vboId = glGenBuffers();
         vboIdList.add(vboId);
         IntBuffer indicesBuffer = MemoryUtil.memAllocInt(indicesSize);
