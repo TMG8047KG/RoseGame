@@ -60,12 +60,12 @@ public class Engine {
             if (targetFps <= 0 || deltaFps >= 1) {
                 window.getMouseInput().input();
                 boolean inputConsumed = iGuiInstance != null ? iGuiInstance.handleGuiInput(scene, window) : false;
-                appLogic.input(window, scene, now - initialTime, inputConsumed);
+                appLogic.input(window, scene, render, now - initialTime, inputConsumed);
             }
 
             if (deltaUpdate >= 1) {
                 long diffTimeMillis = now - updateTime;
-                appLogic.update(window, scene, diffTimeMillis);
+                appLogic.update(window, scene, render, diffTimeMillis);
                 updateTime = now;
                 deltaUpdate--;
             }

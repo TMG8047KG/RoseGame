@@ -117,7 +117,7 @@ public class GuiRender {
     }
 
     private void setupKeyCallBack(Window window) {
-        prevKeyCallBack = glfwSetKeyCallback(window.getWindowHandle(), (handle, key, scancode, action, mods) -> {
+        prevKeyCallBack = glfwSetKeyCallback(window.getWindow(), (handle, key, scancode, action, mods) -> {
                     window.keyCallBack(key, action);
                     ImGuiIO io = ImGui.getIO();
                     if (!io.getWantCaptureKeyboard()) {
@@ -131,7 +131,7 @@ public class GuiRender {
                 }
         );
 
-        glfwSetCharCallback(window.getWindowHandle(), (handle, c) -> {
+        glfwSetCharCallback(window.getWindow(), (handle, c) -> {
             ImGuiIO io = ImGui.getIO();
             if (!io.getWantCaptureKeyboard()) {
                 return;

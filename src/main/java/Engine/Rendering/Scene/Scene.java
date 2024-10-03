@@ -43,12 +43,7 @@ public class Scene {
     }
 
     public void removeEntity(Entity entity){
-        String modelId = entity.getModel().getId();
-        Model model = modelMap.get(modelId);
-        if (model == null) {
-            throw new RuntimeException("Could not find model [" + modelId + "]");
-        }
-        model.getEntitiesList().remove(entity);
+        modelMap.remove(entity.getModel().getId());
     }
 
     public void addModel(Model model) {

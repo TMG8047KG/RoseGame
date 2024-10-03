@@ -94,4 +94,11 @@ public class Render {
         List<Model> modelList = new ArrayList<>(scene.getModelMap().values());
         modelList.forEach(m -> m.getMeshDataList().clear());
     }
+
+    public void updateData(Scene scene) {
+        sceneRender.setupData(scene);
+        shadowRender.setupData(scene);
+        List<Model> modelList = new ArrayList<>(scene.getModelMap().values());
+        modelList.forEach(m -> m.getMeshDataList().clear());
+    }
 }

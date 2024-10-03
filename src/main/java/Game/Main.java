@@ -35,6 +35,8 @@ public class Main implements IAppLogic {
         Main main = new Main();
         Window.WindowOptions opts = new Window.WindowOptions();
         opts.antiAliasing = true;
+        opts.width = 1280;
+        opts.height = 720;
         Engine engine = new Engine("RoseEngine", opts, main);
         engine.start();
     }
@@ -99,7 +101,7 @@ public class Main implements IAppLogic {
     }
 
     @Override
-    public void input(Window window, Scene scene, long diffTimeMillis, boolean inputConsumed) {
+    public void input(Window window, Scene scene, Render render, long diffTimeMillis,boolean inputConsumed) {
         if (inputConsumed) {
             return;
         }
@@ -125,8 +127,9 @@ public class Main implements IAppLogic {
             camera.moveUp(move);
         }
         if(window.isKeyPressed(GLFW_KEY_H)){
-            scene.removeModel(treeEntity.getModel());
-
+            //TODO:See why if you don't delete the tree it gets messed up and after a while crashes
+            scene.removeEntity(treeEntity);
+            render.updateData(scene);
         }
         if (window.isKeyPressed(GLFW_KEY_COMMA)) {
             lightAngle -= 2.5f;
@@ -154,27 +157,32 @@ public class Main implements IAppLogic {
     }
 
     @Override
-    public void update(Window window, Scene scene, long diffTimeMillis) {
+    public void update(Window window, Scene scene, Render render, long diffTimeMillis) {
         Camera camera = scene.getCamera();
         Vector2f currentCameraChunkPos = getChunkPosition(camera.getPosition());
 
         // Check if the camera moved to a new chunk
         if (!currentCameraChunkPos.equals(lastCameraChunkPos)) {
             // Update the terrain chunks
-            scene.removeModel(terrainEntity.getModel());
-            scene.removeEntity(terrainEntity);
 
+            //TODO:Find a way to clean this code a little bit and see if it can be updated without the use of that many arbitrary methods
             List<MeshData> visibleChunks = terrainManager.getVisibleChunks(camera.getPosition());
+            scene.removeEntity(terrainEntity);
+            scene.removeModel(terrainModel);
             terrainModel = new Model("terrain", visibleChunks, List.of());
-            System.out.println("Number of visible chunks: " + visibleChunks.size());
             scene.addModel(terrainModel);
+            System.out.println("Number of visible chunks: " + visibleChunks.size());
 
-            // Update the entity's model with the new terrain model
             terrainEntity.setModel(terrainModel);
-
-            // Update the entity's model matrix
             terrainEntity.updateModelMatrix();
+            treeEntity.updateModelMatrix();
             scene.addEntity(terrainEntity);
+
+
+            //TODO:Look for a way to change or add methods for updating data rather than setting what we already have
+            render.setupData(scene);
+
+
             // Update the last known camera chunk position
             lastCameraChunkPos.set(currentCameraChunkPos);
             System.out.println("Camera position: " + camera.getPosition());

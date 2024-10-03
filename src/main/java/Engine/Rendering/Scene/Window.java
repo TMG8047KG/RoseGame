@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL46.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
-    private final long windowHandle;
+    private final long window;
     private int height;
     private MouseInput mouseInput;
     private Callable<Void> resizeFunc;
@@ -53,22 +53,22 @@ public class Window {
             height = vidMode.height();
         }
 
-        windowHandle = glfwCreateWindow(width, height, title, NULL, NULL);
-        if (windowHandle == NULL) {
+        window = glfwCreateWindow(width, height, title, NULL, NULL);
+        if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        glfwSetFramebufferSizeCallback(windowHandle, (window, w, h) -> resized(w, h));
+        glfwSetFramebufferSizeCallback(window, (window, w, h) -> resized(w, h));
 
         glfwSetErrorCallback((int errorCode, long msgPtr) ->
                 Logger.error("Error code [{}], msg [{}]", errorCode, MemoryUtil.memUTF8(msgPtr))
         );
 
-        glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
+        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             keyCallBack(key, action);
         });
 
-        glfwMakeContextCurrent(windowHandle);
+        glfwMakeContextCurrent(window);
 
         if (opts.fps > 0) {
             glfwSwapInterval(0);
@@ -76,20 +76,20 @@ public class Window {
             glfwSwapInterval(1);
         }
 
-        glfwShowWindow(windowHandle);
+        glfwShowWindow(window);
 
         int[] arrWidth = new int[1];
         int[] arrHeight = new int[1];
-        glfwGetFramebufferSize(windowHandle, arrWidth, arrHeight);
+        glfwGetFramebufferSize(window, arrWidth, arrHeight);
         width = arrWidth[0];
         height = arrHeight[0];
 
-        mouseInput = new MouseInput(windowHandle);
+        mouseInput = new MouseInput(window);
     }
 
     public void cleanup() {
-        glfwFreeCallbacks(windowHandle);
-        glfwDestroyWindow(windowHandle);
+        glfwFreeCallbacks(window);
+        glfwDestroyWindow(window);
         glfwTerminate();
         GLFWErrorCallback callback = glfwSetErrorCallback(null);
         if (callback != null) {
@@ -109,17 +109,17 @@ public class Window {
         return width;
     }
 
-    public long getWindowHandle() {
-        return windowHandle;
+    public long getWindow() {
+        return window;
     }
 
     public boolean isKeyPressed(int keyCode) {
-        return glfwGetKey(windowHandle, keyCode) == GLFW_PRESS;
+        return glfwGetKey(window, keyCode) == GLFW_PRESS;
     }
 
     public void keyCallBack(int key, int action) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-            glfwSetWindowShouldClose(windowHandle, true); // We will detect this in the rendering loop
+            glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
         }
     }
 
@@ -138,11 +138,11 @@ public class Window {
     }
 
     public void update() {
-        glfwSwapBuffers(windowHandle);
+        glfwSwapBuffers(window);
     }
 
     public boolean windowShouldClose() {
-        return glfwWindowShouldClose(windowHandle);
+        return glfwWindowShouldClose(window);
     }
 
     public static class WindowOptions {
