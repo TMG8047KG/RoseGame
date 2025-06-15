@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4f07d979-2c89-40df-ae61-ad173655d6dc" name="Changes" comment="Maven sucks (Made it run on my linux)">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2miO3Nn70gVOIW0Pffm6uILCak4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.Engine.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Maven.RoseEngine [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "Maven.RoseEngine [org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile].executor": "Run",
+    "Maven.RoseEngine [org.apache.maven.plugins:maven-deploy-plugin:3.1.2:help].executor": "Run",
+    "Maven.RoseEngine [org.apache.maven.plugins:maven-install-plugin:3.1.2:install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "jdk.selected.JDK": "corretto-21",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/tmg/brain/Projects/Java/RoseGame",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "jdk.preference.JDK": [
+      "21=/home/tmg/.jdks/corretto-21.0.7"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Users\USER\Desktop\Projects\Java Projects\RoseGame\resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/Game" />
+      <recent name="D:\Users\USER\Desktop\Projects\Java Projects\RoseGame\resources\models\donut" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="Application" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Engine" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Game.Main" />
+      <module name="RoseEngine" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-IU-251.26094.121" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4f07d979-2c89-40df-ae61-ad173655d6dc" name="Changes" comment="" />
+      <created>1727555730135</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1727555730135</updated>
+      <workItem from="1727555731535" duration="247000" />
+      <workItem from="1727600730013" duration="10887000" />
+      <workItem from="1727619100462" duration="1404000" />
+      <workItem from="1727620535569" duration="2636000" />
+      <workItem from="1727627777423" duration="3008000" />
+      <workItem from="1727638790945" duration="3000" />
+      <workItem from="1727724064594" duration="635000" />
+      <workItem from="1727808898708" duration="5522000" />
+      <workItem from="1727893556782" duration="1307000" />
+      <workItem from="1727977315795" duration="7421000" />
+      <workItem from="1728411029901" duration="2305000" />
+      <workItem from="1728421074221" duration="1685000" />
+      <workItem from="1728422789364" duration="9000" />
+      <workItem from="1729281345242" duration="157000" />
+      <workItem from="1729716510112" duration="25000" />
+      <workItem from="1730228882319" duration="636000" />
+      <workItem from="1736371184404" duration="2000" />
+      <workItem from="1737409073671" duration="15000" />
+      <workItem from="1738451204261" duration="2000" />
+      <workItem from="1750008607781" duration="302000" />
+      <workItem from="1750008927944" duration="492000" />
+      <workItem from="1750009508924" duration="57000" />
+      <workItem from="1750009567469" duration="33000" />
+      <workItem from="1750009609253" duration="1640000" />
+    </task>
+    <task id="LOCAL-00001" summary="AMD atio6axx.dll error fix">
+      <option name="closed" value="true" />
+      <created>1727621866223</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727621866223</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Poor try for adding dynamic game objects">
+      <option name="closed" value="true" />
+      <created>1727629188479</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727629188479</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Terrain loading (really janky with a lot of exceptions)">
+      <option name="closed" value="true" />
+      <created>1727984779101</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1727984779102</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="AMD atio6axx.dll error fix" />
+    <MESSAGE value="Poor try for adding dynamic game objects" />
+    <MESSAGE value="Terrain loading (really janky with a lot of exceptions)" />
+    <MESSAGE value="Maven sucks (Made it run on my linux)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Maven sucks (Made it run on my linux)" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
